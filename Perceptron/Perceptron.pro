@@ -17,7 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         example.cpp \
         filereader.cpp \
-        main.cpp
+        main.cpp \
+        perceptron.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -26,4 +27,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     example.h \
-    filereader.h
+    filereader.h \
+    perceptron.h
