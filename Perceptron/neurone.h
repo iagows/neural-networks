@@ -8,10 +8,10 @@ class Neurone
 public:
     Neurone();
 
-    double getValue();
-    void setValue(double v);
+    double &getValue();
+    void setValue(const double v);
 
-    QList<double> getWeights();
+    QList<double> &getWeights();
     void setWeights(QList<double> w);
 private:
     double value;

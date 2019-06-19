@@ -5,17 +5,17 @@ Neurone::Neurone()
 
 }
 
-double Neurone::getValue()
+double& Neurone::getValue()
 {
     return value;
 }
 
-void Neurone::setValue(double v)
+void Neurone::setValue(const double v)
 {
     value = v;
 }
 
-QList<double> Neurone::getWeights()
+QList<double>& Neurone::getWeights()
 {
     return weights;
 }

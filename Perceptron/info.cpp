@@ -5,12 +5,12 @@ Info::Info()
 
 }
 
-QList<double> Info::getInput() const
+QList<double> &Info::getInput()
 {
     return input;
 }
 
-QList<double> Info::getOutput() const
+QList<double> &Info::getOutput()
 {
     return output;
 }

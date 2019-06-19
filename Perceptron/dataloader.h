@@ -12,7 +12,7 @@ public:
     DataLoader();
     bool load(QString path, QChar separator = ',', QChar needleIO = '#');
 
-    QList<Info> getData();
+    QList<Info>& getData();
 private:
     QList<Info> data;
 };

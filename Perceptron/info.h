@@ -8,8 +8,8 @@ class Info
 public:
     Info();
 
-    QList<double> getInput() const;
-    QList<double> getOutput() const;
+    QList<double>& getInput();
+    QList<double>& getOutput();
 
     void setInput(QList<double> i);
     void setOutput(QList<double> o);

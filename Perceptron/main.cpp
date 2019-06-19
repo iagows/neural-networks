@@ -8,6 +8,9 @@
 
 int main(int argc, char *argv[])
 {
+    const double initialNeuroneValue = 1;
+    const double alpha = 1;
+
     QCoreApplication a(argc, argv);
     QString fileName;
 
@@ -25,8 +28,9 @@ int main(int argc, char *argv[])
 
     QList<Neurone> brain;
 
-    int inLen = lines.at(0).getInput().size();
-    int outLen = lines.at(0).getOutput().size();
+    Info thisLine = lines.at(0);
+    int inLen = thisLine.getInput().size();
+    int outLen = thisLine.getOutput().size();
 
 
     for (int i = 0; i < inLen; ++i) {
@@ -34,10 +38,12 @@ int main(int argc, char *argv[])
         QList<double> w;
 
         for (int o = 0; o < outLen; ++o) {
-            qint64 rand = QRandomGenerator64::global()->generate() & std::numeric_limits<qint64>::max();
+            //qint64 rand = QRandomGenerator64::global()->generate() & std::numeric_limits<qint64>::max();
+            int rand = 1;
             w.append(rand);
         }
 
+        n.setValue(initialNeuroneValue);
         n.setWeights(w);
         brain.append(n);
     }
@@ -58,30 +64,62 @@ int main(int argc, char *argv[])
 
     bool done = false;
 
+    int count = 0;
+
     while (!done) {
+        int internalCounter = 0;
+        std::cout << "------ " << count << " ------" << std::endl;
+
         for (int i = 0, size = lines.size(); i < size; ++i) {
             Info line = lines.at(i);
-            QList<double> input = line.getInput();
-            QList<double> output = line.getOutput();
+            QList<double> inputLine = line.getInput();
+            QList<double> outputLine = line.getOutput();
 
-            for (int out = 0; out < output.size(); ++out) {
-                for (int in = 0; in < input.size(); ++in) {
+            for (int out = 0; out < outputLine.size(); ++out) {
+                for (int in = 0; in < inputLine.size(); ++in) {
                     Neurone n = brain.at(in);
-                    n.setValue(input.at(i));
+                    n.setValue(inputLine.at(in));
+                    brain.replace(in, n);
                 }
 
                 //calcular e comparar com output.at(out)
                 double net = 0;
 
                 for (Neurone n : brain) {
+                    net += n.getValue() * n.getWeights().at(out);
+                }
 
+                //se deu diferente
+
+                if (!qFuzzyCompare(net, outputLine.at(out))) {
+                    for (int j = 0; j < brain.size(); ++j) {
+                        Neurone n = brain.at(j);
+                        double newW = n.getWeights().at(out) + (alpha * (outputLine.at(out) - net) * n.getValue());
+
+                        n.getWeights()[out] = newW;
+                        brain.replace(j, n);
+                        std::cout << "Valor: " << newW << std::endl;
+                    }
+
+                    std::cout << "---------------" << std::endl;
+
+                } else {
+                    internalCounter++;
+
+                    if (internalCounter >= size) {
+                        std::cout << "Eita" << std::endl;
+                        goto fim;
+                    }
                 }
             }
-
         }
 
-        break;
+        if (++count > 40) {
+            break;
+        }
     }
 
-    return a.exec();
+fim:
+
+    return 0;
 }

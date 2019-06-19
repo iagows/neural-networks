@@ -53,7 +53,7 @@ bool DataLoader::load(QString path, QChar separator, QChar needleIO)
     return false;
 }
 
-QList<Info> DataLoader::getData()
+QList<Info> &DataLoader::getData()
 {
     return data;
 }
