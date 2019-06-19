@@ -3,5 +3,5 @@ Neural networks projects
 
 ## Projects:
 
-* Perceptron
+* [Perceptron](https://github.com/iagows/neural-networks/tree/master/Perceptron)
 * Adaline
